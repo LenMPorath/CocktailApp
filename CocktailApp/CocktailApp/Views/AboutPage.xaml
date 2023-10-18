@@ -1,0 +1,41 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CocktailApp.Views.AboutPage"
+             xmlns:vm="clr-namespace:CocktailApp.ViewModels"
+             Title="{Binding Title}">
+    
+    <ContentPage.BindingContext>
+        <vm:AboutViewModel />
+    </ContentPage.BindingContext>
+    
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Color x:Key="Accent">#96d1ff</Color>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+        <StackLayout BackgroundColor="{StaticResource Accent}" VerticalOptions="FillAndExpand" HorizontalOptions="Fill">
+            <StackLayout Orientation="Horizontal" HorizontalOptions="Center" VerticalOptions="Center">
+                <ContentView Padding="0" VerticalOptions="CenterAndExpand" HorizontalOptions="FillAndExpand">
+                    <Image Source="AboutImage.png" Aspect="AspectFill" WidthRequest="400" HeightRequest="150" />
+                </ContentView>
+            </StackLayout>
+        </StackLayout>
+        <ScrollView Grid.Row="1">
+            <StackLayout Orientation="Vertical" Padding="30,24,30,24" Spacing="10">
+                <Label Text="CocktailApp" FontSize="Title"/>
+                <Label Text="Entwickelt von Len Marten Porath" FontSize="12" Padding="0,0,0,0"/>
+                <Label Text="Mit der CocktailApp kannst du zu jedem feierlichen Anlass Cocktail-Bestellungen aufgeben, welche Len für dich zubereitet!" FontSize="16" Padding="0,20,0,10"/>
+                <Label Text="Melde dich im Tab 'Login' an, um Zugriff auf alle weiteren Tabs zu bekommen!" FontSize="16" Padding="0,0,0,10"/>
+                <Label Text="Im Tab 'Aufträge' kannst du dann einen neuen Auftrag erstellen, welchen Len dann zeitnahe versucht zu bearbeiten! 😊" FontSize="16" Padding="0,0,0,10"/>
+            </StackLayout>
+        </ScrollView>
+    </Grid>
+
+</ContentPage>
