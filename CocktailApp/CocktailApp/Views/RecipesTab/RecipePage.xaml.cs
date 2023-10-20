@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using CocktailApp.Views.RecipesTab;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -16,5 +16,11 @@ namespace CocktailApp.Views
         {
             InitializeComponent();
         }
+        private async void OnCreateRecipeClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new CreateRecipePage()); // Navigiere zur "Rezept Erstellen"-Seite
+        }
+        
+
     }
 }

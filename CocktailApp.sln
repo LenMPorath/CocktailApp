@@ -7,7 +7,7 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailApp.Android", "Cock
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailApp.iOS", "CocktailApp\CocktailApp.iOS\CocktailApp.iOS.csproj", "{C2E00F69-04DB-465F-BD9B-0B1EA691DF43}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailApp", "CocktailApp\CocktailApp\CocktailApp.csproj", "{B704503E-44B9-49DA-956B-A38B0ACFB113}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailApp", "CocktailApp\CocktailApp\CocktailApp.csproj", "{B704503E-44B9-49DA-956B-A38B0ACFB113}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

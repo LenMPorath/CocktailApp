@@ -12,34 +12,46 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Update="Views\NewItemPage.xaml.cs">
-      <DependentUpon>NewItemPage.xaml</DependentUpon>
+    <Compile Update="Views\InventoryTab\CreateIngredientPage.xaml.cs">
+      <DependentUpon>CreateIngredientPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\OrdersPage.xaml.cs">
+    <Compile Update="Views\OrdersTab\OrdersPage.xaml.cs">
       <DependentUpon>OrdersPage.xaml</DependentUpon>
     </Compile>
-    <Compile Update="Views\InventoryPage.xaml.cs">
+    <Compile Update="Views\InventoryTab\InventoryPage.xaml.cs">
       <DependentUpon>InventoryPage.xaml</DependentUpon>
+    </Compile>
+    <Compile Update="Views\OrdersTab\CreateOrderPage.xaml.cs">
+      <DependentUpon>CreateOrderPage.xaml</DependentUpon>
     </Compile>
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Update="Views\ForgotPasswordPage.xaml">
+    <EmbeddedResource Update="Views\InventoryTab\CreateIngredientPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\OrdersPage.xaml">
+    <EmbeddedResource Update="Views\LoginTab\ForgotPasswordPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\InventoryPage.xaml">
+    <EmbeddedResource Update="Views\OrdersTab\OrdersPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RecipePage.xaml">
+    <EmbeddedResource Update="Views\InventoryTab\InventoryPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RegisterPage.xaml">
+    <EmbeddedResource Update="Views\OrdersTab\CreateOrderPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
-    <EmbeddedResource Update="Views\RegisterPopUpPage.xaml">
+    <EmbeddedResource Update="Views\RecipesTab\CreateRecipePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\RecipesTab\RecipePage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LoginTab\RegisterPage.xaml">
+      <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
+    </EmbeddedResource>
+    <EmbeddedResource Update="Views\LoginTab\RegisterPopUpPage.xaml">
       <Generator>MSBuild:UpdateDesignTimeXaml</Generator>
     </EmbeddedResource>
   </ItemGroup>
