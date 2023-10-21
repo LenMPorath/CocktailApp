@@ -2,6 +2,7 @@
 using CocktailApp.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Hosting;
+using System.Reflection.Metadata;
 
 namespace CocktailAppBackend
 {
@@ -27,14 +28,27 @@ namespace CocktailAppBackend
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+
             modelBuilder.Entity<Recipe>()
                 .HasMany(e => e.Ingredients)
                 .WithMany(e => e.Recipes)
-                .UsingEntity(
-                   "RecipeDetail",
-                    l => l.HasOne(typeof(Ingredient)).WithMany().HasForeignKey("IngredientsId").HasPrincipalKey(nameof(Ingredient.Id)),
-                    r => r.HasOne(typeof(Recipe)).WithMany().HasForeignKey("RecipesId").HasPrincipalKey(nameof(Recipe.Id)),
-                    j => j.HasKey("RecipesId", "IngredientsId"));
+                .UsingEntity<RecipeDetail>();
+
+            modelBuilder.Entity<Recipe>()
+                .HasMany(e => e.Tags)
+                .WithMany(e => e.Recipes);
+
+            modelBuilder.Entity<Auth>()
+                .HasMany(e => e.OrderList)
+                .WithOne(e => e.CreatedByUser)
+                .HasForeignKey("AuthId")
+                .IsRequired();
+
+            modelBuilder.Entity<Recipe>()
+                .HasMany(e => e.Orders)
+                .WithOne(e => e.Recipe)
+                .HasForeignKey("RecipeId")
+                .IsRequired();
         }
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

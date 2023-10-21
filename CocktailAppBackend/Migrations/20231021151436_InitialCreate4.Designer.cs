@@ -3,6 +3,7 @@ using System;
 using CocktailAppBackend;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CocktailAppBackend.Migrations
 {
     [DbContext(typeof(CocktailAppDBContext))]
-    partial class CocktailAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231021151436_InitialCreate4")]
+    partial class InitialCreate4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -65,18 +68,17 @@ namespace CocktailAppBackend.Migrations
 
             modelBuilder.Entity("CocktailApp.Models.Order", b =>
                 {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
+                    b.Property<string>("Id")
+                        .HasColumnType("varchar(255)");
 
                     b.Property<int>("Amount")
                         .HasColumnType("int");
 
-                    b.Property<int>("AuthId")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("CreatedAt")
                         .HasColumnType("datetime(6)");
+
+                    b.Property<int>("CreatedByUserId")
+                        .HasColumnType("int");
 
                     b.Property<string>("Note")
                         .HasColumnType("longtext");
@@ -90,7 +92,7 @@ namespace CocktailAppBackend.Migrations
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AuthId");
+                    b.HasIndex("CreatedByUserId");
 
                     b.HasIndex("RecipeId");
 
@@ -151,6 +153,21 @@ namespace CocktailAppBackend.Migrations
                     b.ToTable("Tags");
                 });
 
+            modelBuilder.Entity("RecipeDetail", b =>
+                {
+                    b.Property<int>("RecipesId")
+                        .HasColumnType("int");
+
+                    b.Property<int>("IngredientsId")
+                        .HasColumnType("int");
+
+                    b.HasKey("RecipesId", "IngredientsId");
+
+                    b.HasIndex("IngredientsId");
+
+                    b.ToTable("RecipeDetail");
+                });
+
             modelBuilder.Entity("RecipeTag", b =>
                 {
                     b.Property<int>("RecipesId")
@@ -170,7 +187,7 @@ namespace CocktailAppBackend.Migrations
                 {
                     b.HasOne("CocktailApp.Models.Auth", "CreatedByUser")
                         .WithMany("OrderList")
-                        .HasForeignKey("AuthId")
+                        .HasForeignKey("CreatedByUserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
@@ -202,6 +219,21 @@ namespace CocktailAppBackend.Migrations
                     b.Navigation("Ingredient");
 
                     b.Navigation("Recipe");
+                });
+
+            modelBuilder.Entity("RecipeDetail", b =>
+                {
+                    b.HasOne("CocktailApp.Models.Ingredient", null)
+                        .WithMany()
+                        .HasForeignKey("IngredientsId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("CocktailApp.Models.Recipe", null)
+                        .WithMany()
+                        .HasForeignKey("RecipesId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
                 });
 
             modelBuilder.Entity("RecipeTag", b =>
