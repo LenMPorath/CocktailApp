@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using CocktailAppBackend.Services;
 
 namespace CocktailAppBackend
 {
@@ -17,10 +18,13 @@ namespace CocktailAppBackend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                });
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "CocktailAPI", Version = "v1.0" });
@@ -31,7 +35,8 @@ namespace CocktailAppBackend
                     options.UseMySql(connectionString, new MariaDbServerVersion("10.9.0"));
                 });
 
-            // Weitere Service-Konfigurationen
+            services.AddScoped<IOrderService, OrderService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
