@@ -9,6 +9,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CocktailApp.iOS", "Cocktail
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailApp", "CocktailApp\CocktailApp\CocktailApp.csproj", "{B704503E-44B9-49DA-956B-A38B0ACFB113}"
 EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CocktailAppBackend", "CocktailAppBackend\CocktailAppBackend.csproj", "{B317C19F-18BF-4381-9875-5A5099476C01}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -73,6 +75,18 @@ Global
 		{B704503E-44B9-49DA-956B-A38B0ACFB113}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
 		{B704503E-44B9-49DA-956B-A38B0ACFB113}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 		{B704503E-44B9-49DA-956B-A38B0ACFB113}.Release|iPhoneSimulator.Deploy.0 = Release|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Debug|iPhone.ActiveCfg = Debug|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Debug|iPhone.Build.0 = Debug|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Debug|iPhoneSimulator.ActiveCfg = Debug|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Debug|iPhoneSimulator.Build.0 = Debug|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Release|Any CPU.Build.0 = Release|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Release|iPhone.ActiveCfg = Release|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Release|iPhone.Build.0 = Release|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Release|iPhoneSimulator.ActiveCfg = Release|Any CPU
+		{B317C19F-18BF-4381-9875-5A5099476C01}.Release|iPhoneSimulator.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -4,10 +4,10 @@ using System.Text;
 
 namespace CocktailApp.Models
 {
-    public class Recipe
+    public class Tag
     {
         public int Id { get; set; }
-        public string Name { get; set; }
-        public Tag Tags { get; set; }
+        public string Title { get; set; }
+        public ICollection<Recipe> Recipes { get; set; }
     }
 }
