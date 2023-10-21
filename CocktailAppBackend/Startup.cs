@@ -23,11 +23,9 @@ namespace CocktailAppBackend
             services.AddControllers();
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CocktailAPI", Version = "v1.0" });
             });
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            var outputPath = @"C:\Users\lenmp\output.txt";
-            File.WriteAllText(outputPath, "Connection String:" + connectionString);
             services.AddDbContext<CocktailAppDBContext>(options =>
                 {
                     options.UseMySql(connectionString, new MariaDbServerVersion("10.9.0"));
@@ -50,7 +48,7 @@ namespace CocktailAppBackend
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CocktailAPI v1.0");
             });
             app.UseHttpsRedirection();
             app.UseRouting();

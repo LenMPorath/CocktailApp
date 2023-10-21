@@ -17,9 +17,7 @@ namespace CocktailAppBackend
 
         private readonly IConfiguration _configuration;
 
-        public CocktailAppDBContext()
-        {
-        }
+        public CocktailAppDBContext(){}
 
         public CocktailAppDBContext(DbContextOptions<CocktailAppDBContext> options, IConfiguration configuration) : base(options)
         {
@@ -53,9 +51,7 @@ namespace CocktailAppBackend
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
-            var serverVersion = new MariaDbServerVersion("10.9.8");
-            optionsBuilder.UseMySql(connectionString, serverVersion,
+            optionsBuilder.UseMySql(_configuration.GetConnectionString("DefaultConnection"), new MariaDbServerVersion("10.9.8"),
                 options => options.EnableRetryOnFailure());
         }
 
