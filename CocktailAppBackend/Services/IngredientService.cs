@@ -5,7 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CocktailAppBackend.Services
 {
-    public class IngredientService
+    public interface IIngredientService
+    {
+        Task<Ingredient> AddIngredientAsync(string name, int kcal);
+        Task<Ingredient> UpdateIngredientAsync(int ingredientId, string newName, int newKcal);
+        Task DeleteIngredientAsync(int ingredientId);
+        Task<List<Ingredient>> GetAllIngredientsAsync();
+        Task<Ingredient?> GetOneIngredientAsync(int ingredientId);
+    }
+    public class IngredientService : IIngredientService
     {
         private readonly CocktailAppDBContext _dbContext;
 
@@ -14,7 +22,7 @@ namespace CocktailAppBackend.Services
             _dbContext = dbContext;
         }
 
-        public async Task AddIngredientAsync(string name, int kcal)
+        public async Task<Ingredient> AddIngredientAsync(string name, int kcal)
         {
             var ingredient = new Ingredient
             {
@@ -24,9 +32,10 @@ namespace CocktailAppBackend.Services
 
             await _dbContext.Ingredients.AddAsync(ingredient);
             await _dbContext.SaveChangesAsync();
+            return ingredient;
         }
 
-        public async Task UpdateIngredientAsync(int ingredientId, string newName, int newKcal)
+        public async Task<Ingredient> UpdateIngredientAsync(int ingredientId, string newName, int newKcal)
         {
             var ingredient = await _dbContext.Ingredients.FindAsync(ingredientId);
 
@@ -36,6 +45,7 @@ namespace CocktailAppBackend.Services
                 ingredient.Kcal = newKcal;
                 await _dbContext.SaveChangesAsync();
             }
+            return ingredient;
         }
 
         public async Task DeleteIngredientAsync(int ingredientId)

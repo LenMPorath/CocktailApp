@@ -14,6 +14,7 @@ namespace CocktailAppBackend
         public DbSet<RecipeDetail> RecipeDetails { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         private readonly IConfiguration _configuration;
 
@@ -35,6 +36,16 @@ namespace CocktailAppBackend
             modelBuilder.Entity<Recipe>()
                 .HasMany(e => e.Tags)
                 .WithMany(e => e.Recipes);
+
+            modelBuilder.Entity<Recipe>()
+                .HasMany(e => e.Favourited)
+                .WithMany(e => e.Favourites);
+
+            modelBuilder.Entity<Recipe>()
+                .HasMany(e => e.Ratings)
+                .WithOne(e => e.RatedRecipe)
+                .HasForeignKey("RatedRecipeId")
+                .IsRequired();
 
             modelBuilder.Entity<Auth>()
                 .HasMany(e => e.OrderList)

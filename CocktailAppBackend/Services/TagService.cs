@@ -5,10 +5,22 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CocktailAppBackend.Services
 {
-    public class TagService
+    public interface ITagService
+    {
+        Task<Tag> AddTagAsync(string title);
+        Task<Tag> UpdateTagAsync(int id, string newTitle);
+        Task DeleteTagAsync(int id);
+        Task<List<Tag>> GetAllTagsAsync();
+        Task<Tag?> GetTagAsync(int id);
+    }
+    public class TagService : ITagService
     {
         private readonly CocktailAppDBContext _dbContext;
 
+        public TagService(CocktailAppDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public async Task<Tag> AddTagAsync(string title)
         {
             var tag = new Tag { Title = title };

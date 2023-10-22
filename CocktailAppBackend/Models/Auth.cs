@@ -14,5 +14,6 @@ namespace CocktailApp.Models
         public string EMail { get; set; }
         public bool IsAdmin { get; set; }
         public ICollection<Order>? OrderList { get; set; }
+        public ICollection<Recipe>? Favourites { get; set; }
     }
 }

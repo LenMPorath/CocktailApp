@@ -3,12 +3,31 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CocktailAppBackend.Services
 {
-    public class AuthService
+    public interface IAuthService
+    {
+        Task<Auth> AddAuthAsync(string username, string password, string email, bool isAdmin);
+        Task<Auth> UpdateAuthAsync(int id, string newUsername, string newPassword, string newEmail, bool newIsAdmin);
+        Task DeleteAuthAsync(int id);
+        Task<List<Auth>> GetAllAuthsAsync();
+        Task<Auth?> GetAuthAsync(int id);
+    }
+    public class AuthService : IAuthService
     {
         private readonly CocktailAppDBContext _dbContext;
+
+        public AuthService(CocktailAppDBContext dbContext)
+        {
+            _dbContext = dbContext;
+        }
         public async Task<Auth> AddAuthAsync(string username, string password, string email, bool isAdmin)
         {
-            var auth = new Auth { Username = username, Password = password, EMail = email, IsAdmin = isAdmin };
+            var auth = new Auth { 
+                Username = username, 
+                Password = password, 
+                EMail = email, 
+                IsAdmin = isAdmin,
+                
+            };
             _dbContext.Auths.Add(auth);
             await _dbContext.SaveChangesAsync();
             return auth;
