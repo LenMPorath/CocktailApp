@@ -3,6 +3,7 @@ using System;
 using CocktailAppBackend;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,29 +11,16 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CocktailAppBackend.Migrations
 {
     [DbContext(typeof(CocktailAppDBContext))]
-    partial class CocktailAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231021204854_InitialCreate9")]
+    partial class InitialCreate9
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
                 .HasAnnotation("ProductVersion", "7.0.12")
                 .HasAnnotation("Relational:MaxIdentifierLength", 64);
-
-            modelBuilder.Entity("AuthRecipe", b =>
-                {
-                    b.Property<int>("FavouritedId")
-                        .HasColumnType("int");
-
-                    b.Property<int>("FavouritesId")
-                        .HasColumnType("int");
-
-                    b.HasKey("FavouritedId", "FavouritesId");
-
-                    b.HasIndex("FavouritesId");
-
-                    b.ToTable("AuthRecipe");
-                });
 
             modelBuilder.Entity("CocktailApp.Models.Auth", b =>
                 {
@@ -112,33 +100,6 @@ namespace CocktailAppBackend.Migrations
                     b.ToTable("Orders");
                 });
 
-            modelBuilder.Entity("CocktailApp.Models.Rating", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int");
-
-                    b.Property<string>("Comment")
-                        .HasColumnType("longtext");
-
-                    b.Property<int>("Grade")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RatedById")
-                        .HasColumnType("int");
-
-                    b.Property<int>("RatedRecipeId")
-                        .HasColumnType("int");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("RatedById");
-
-                    b.HasIndex("RatedRecipeId");
-
-                    b.ToTable("Ratings");
-                });
-
             modelBuilder.Entity("CocktailApp.Models.Recipe", b =>
                 {
                     b.Property<int>("Id")
@@ -208,21 +169,6 @@ namespace CocktailAppBackend.Migrations
                     b.ToTable("RecipeTag");
                 });
 
-            modelBuilder.Entity("AuthRecipe", b =>
-                {
-                    b.HasOne("CocktailApp.Models.Auth", null)
-                        .WithMany()
-                        .HasForeignKey("FavouritedId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CocktailApp.Models.Recipe", null)
-                        .WithMany()
-                        .HasForeignKey("FavouritesId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-                });
-
             modelBuilder.Entity("CocktailApp.Models.Order", b =>
                 {
                     b.HasOne("CocktailApp.Models.Auth", "CreatedByUser")
@@ -240,25 +186,6 @@ namespace CocktailAppBackend.Migrations
                     b.Navigation("CreatedByUser");
 
                     b.Navigation("Recipe");
-                });
-
-            modelBuilder.Entity("CocktailApp.Models.Rating", b =>
-                {
-                    b.HasOne("CocktailApp.Models.Auth", "RatedBy")
-                        .WithMany()
-                        .HasForeignKey("RatedById")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.HasOne("CocktailApp.Models.Recipe", "RatedRecipe")
-                        .WithMany("Ratings")
-                        .HasForeignKey("RatedRecipeId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
-
-                    b.Navigation("RatedBy");
-
-                    b.Navigation("RatedRecipe");
                 });
 
             modelBuilder.Entity("CocktailApp.Models.RecipeDetail", b =>
@@ -308,8 +235,6 @@ namespace CocktailAppBackend.Migrations
             modelBuilder.Entity("CocktailApp.Models.Recipe", b =>
                 {
                     b.Navigation("Orders");
-
-                    b.Navigation("Ratings");
 
                     b.Navigation("RecipeDetails");
                 });

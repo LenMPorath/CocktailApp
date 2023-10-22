@@ -14,5 +14,7 @@ namespace CocktailApp.Models
         public ICollection<Order> Orders { get; set; }
         public ICollection<Ingredient> Ingredients { get; set; }
         public ICollection<RecipeDetail> RecipeDetails { get; set; }
+        public ICollection<Auth>? Favourited { get; set; }
+        public ICollection<Rating>? Ratings { get; set; }
     }
 }

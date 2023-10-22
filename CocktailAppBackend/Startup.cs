@@ -5,6 +5,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.OpenApi.Models;
+using CocktailAppBackend.Services;
 
 namespace CocktailAppBackend
 {
@@ -17,23 +18,29 @@ namespace CocktailAppBackend
 
         public IConfiguration Configuration { get; }
 
-        // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddControllers();
+            services.AddControllers()
+                .AddJsonOptions(options =>
+                {
+                    options.JsonSerializerOptions.ReferenceHandler = System.Text.Json.Serialization.ReferenceHandler.Preserve;
+                });
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new OpenApiInfo { Title = "Your API", Version = "v1" });
+                c.SwaggerDoc("v1", new OpenApiInfo { Title = "CocktailAPI", Version = "v1.0" });
             });
             string connectionString = Configuration.GetConnectionString("DefaultConnection");
-            var outputPath = @"C:\Users\lenmp\output.txt";
-            File.WriteAllText(outputPath, "Connection String:" + connectionString);
             services.AddDbContext<CocktailAppDBContext>(options =>
                 {
                     options.UseMySql(connectionString, new MariaDbServerVersion("10.9.0"));
                 });
 
-            // Weitere Service-Konfigurationen
+            services.AddScoped<IOrderService, OrderService>();
+            services.AddScoped<IAuthService, AuthService>();
+            services.AddScoped<IIngredientService, IngredientService>();
+            services.AddScoped<IRatingService, RatingService>();
+            services.AddScoped<ITagService, TagService>();
+
         }
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -50,7 +57,7 @@ namespace CocktailAppBackend
             app.UseSwagger();
             app.UseSwaggerUI(c =>
             {
-                c.SwaggerEndpoint("/swagger/v1/swagger.json", "Your API V1");
+                c.SwaggerEndpoint("/swagger/v1/swagger.json", "CocktailAPI v1.0");
             });
             app.UseHttpsRedirection();
             app.UseRouting();

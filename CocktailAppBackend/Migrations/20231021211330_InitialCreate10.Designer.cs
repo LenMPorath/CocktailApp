@@ -3,6 +3,7 @@ using System;
 using CocktailAppBackend;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 
 #nullable disable
@@ -10,9 +11,11 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace CocktailAppBackend.Migrations
 {
     [DbContext(typeof(CocktailAppDBContext))]
-    partial class CocktailAppDBContextModelSnapshot : ModelSnapshot
+    [Migration("20231021211330_InitialCreate10")]
+    partial class InitialCreate10
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -127,16 +130,16 @@ namespace CocktailAppBackend.Migrations
                     b.Property<int>("RatedById")
                         .HasColumnType("int");
 
-                    b.Property<int>("RatedRecipeId")
+                    b.Property<int>("RatingId")
                         .HasColumnType("int");
 
                     b.HasKey("Id");
 
                     b.HasIndex("RatedById");
 
-                    b.HasIndex("RatedRecipeId");
+                    b.HasIndex("RatingId");
 
-                    b.ToTable("Ratings");
+                    b.ToTable("Rating");
                 });
 
             modelBuilder.Entity("CocktailApp.Models.Recipe", b =>
@@ -252,7 +255,7 @@ namespace CocktailAppBackend.Migrations
 
                     b.HasOne("CocktailApp.Models.Recipe", "RatedRecipe")
                         .WithMany("Ratings")
-                        .HasForeignKey("RatedRecipeId")
+                        .HasForeignKey("RatingId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

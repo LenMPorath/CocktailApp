@@ -14,12 +14,11 @@ namespace CocktailAppBackend
         public DbSet<RecipeDetail> RecipeDetails { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
+        public DbSet<Rating> Ratings { get; set; }
 
         private readonly IConfiguration _configuration;
 
-        public CocktailAppDBContext()
-        {
-        }
+        public CocktailAppDBContext(){}
 
         public CocktailAppDBContext(DbContextOptions<CocktailAppDBContext> options, IConfiguration configuration) : base(options)
         {
@@ -38,6 +37,16 @@ namespace CocktailAppBackend
                 .HasMany(e => e.Tags)
                 .WithMany(e => e.Recipes);
 
+            modelBuilder.Entity<Recipe>()
+                .HasMany(e => e.Favourited)
+                .WithMany(e => e.Favourites);
+
+            modelBuilder.Entity<Recipe>()
+                .HasMany(e => e.Ratings)
+                .WithOne(e => e.RatedRecipe)
+                .HasForeignKey("RatedRecipeId")
+                .IsRequired();
+
             modelBuilder.Entity<Auth>()
                 .HasMany(e => e.OrderList)
                 .WithOne(e => e.CreatedByUser)
@@ -53,9 +62,7 @@ namespace CocktailAppBackend
 
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
-            var connectionString = _configuration.GetConnectionString("DefaultConnection");
-            var serverVersion = new MariaDbServerVersion("10.9.8");
-            optionsBuilder.UseMySql(connectionString, serverVersion,
+            optionsBuilder.UseMySql(_configuration.GetConnectionString("DefaultConnection"), new MariaDbServerVersion("10.9.8"),
                 options => options.EnableRetryOnFailure());
         }
 
