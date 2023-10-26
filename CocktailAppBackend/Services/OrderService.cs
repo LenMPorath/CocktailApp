@@ -11,9 +11,9 @@ namespace CocktailAppBackend.Services
     {
         Task AddOrderAsync(int recipeId, int authId, DateTime createdAt, int amount, string? note, string status);
         Task DeleteOrderAsync(int id);
-        Task<Order> UpdateOrderAsync(int id, int recipeId, int amount, string? note, string status);
+        Task UpdateOrderAsync(int id, int recipeId, int amount, string? note, string status);
         Task<List<AOrder>> GetAllOrderAsync();
-        Task<AOrder?> GetOrderAsync(int id);
+        Task<AOrder> GetOrderAsync(int id);
     }
     public class OrderService : IOrderService
     {
@@ -26,10 +26,23 @@ namespace CocktailAppBackend.Services
 
         public async Task AddOrderAsync(int recipeId, int authId, DateTime createdAt, int amount, string? note, string status)
         {
+            var recipe = await _dbContext.Recipes.FindAsync(recipeId);
+
+            if (recipe == null)
+            {
+                throw new ArgumentException($"Recipe with id {recipeId} not found");
+            }
+
+            var auth = await _dbContext.Auths.FindAsync(authId);
+
+            if (auth == null)
+            {
+                throw new ArgumentException($"Auth with id {authId} not found");
+            }
             var order = new Order
             {
-                Recipe = await _dbContext.Recipes.FindAsync(recipeId),
-                CreatedByUser = await _dbContext.Auths.FindAsync(authId),
+                Recipe = recipe,
+                CreatedByUser = auth,
                 CreatedAt = createdAt,
                 Amount = amount,
                 Note = note,
@@ -41,11 +54,16 @@ namespace CocktailAppBackend.Services
 
         public async Task DeleteOrderAsync(int id)
         {
-            _dbContext.Orders.Remove(_dbContext.Orders.Find(id));
+            var order = await _dbContext.Orders.FindAsync(id);
+            if (order == null)
+            {
+                throw new Exception($"Order with ID {id} wasn't found!");
+            }
+            _dbContext.Orders.Remove(order);
             await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<Order> UpdateOrderAsync(int id, int recipeId, int amount, string? note, string status)
+        public async Task UpdateOrderAsync(int id, int recipeId, int amount, string? note, string status)
         {
             var existingOrder = await _dbContext.Orders
                 .Include(o => o.Recipe)
@@ -69,8 +87,6 @@ namespace CocktailAppBackend.Services
             existingOrder.Status = status;
 
             await _dbContext.SaveChangesAsync();
-
-            return existingOrder;
         }
 
 
@@ -81,7 +97,7 @@ namespace CocktailAppBackend.Services
                 {
                     Id = o.Id,
                     RecipeId = o.Recipe.Id,
-                    AuthId = o.CreatedByUser.Id,
+                    CreatedByUserId = o.CreatedByUser.Id,
                     CreatedAt = o.CreatedAt,
                     Amount = o.Amount,
                     Note = o.Note,
@@ -90,20 +106,23 @@ namespace CocktailAppBackend.Services
                 .ToListAsync();
         }
 
-        public async Task<AOrder?> GetOrderAsync(int id)
+        public async Task<AOrder> GetOrderAsync(int id)
         {
             var order = await _dbContext.Orders
                 .Include(o => o.Recipe)
                 .Include(o => o.CreatedByUser)
                 .FirstOrDefaultAsync(o => o.Id == id);
 
-            if (order == null) return null;
+            if (order == null)
+            {
+                throw new Exception($"Order with ID {id} wasn't found!");
+            }
 
             return new AOrder
             {
                 Id = order.Id,
                 RecipeId = order.Recipe.Id,
-                AuthId = order.CreatedByUser.Id,
+                CreatedByUserId = order.CreatedByUser.Id,
                 CreatedAt = order.CreatedAt,
                 Amount = order.Amount,
                 Note = order.Note,

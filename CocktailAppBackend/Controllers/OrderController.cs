@@ -32,12 +32,8 @@ namespace CocktailAppBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateOrder(int id, int recipeId, int amount, string? note, string status)
         {
-            var result = await _orderService.UpdateOrderAsync(id, recipeId, amount, note, status);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
+            await _orderService.UpdateOrderAsync(id, recipeId, amount, note, status);
+            return Ok();
         }
 
         [HttpDelete("{id}")]

@@ -14,7 +14,7 @@ namespace CocktailAppBackend.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Recipe> AddRecipeAsync(string name, List<Tuple<Ingredient, int>> ingredientsWithAmount, List<Tag> tags)
+        public async Task<Recipe> AddRecipeAsync(string name, List<Tuple<Ingredient, float>> ingredientsWithAmount, List<Tag> tags)
         {
             var recipe = new Recipe { Name = name, Ingredients = new List<Ingredient>(), Tags = tags };
             foreach (var tuple in ingredientsWithAmount)
@@ -28,10 +28,11 @@ namespace CocktailAppBackend.Services
             }
             _dbContext.Recipes.Add(recipe);
             await _dbContext.SaveChangesAsync();
+            await _dbContext.UpdateRecipeValues();
             return recipe;
         }
 
-        public async Task<Recipe> UpdateRecipeAsync(int id, string newName, List<Tuple<Ingredient, int>> newIngredientsWithAmount, List<Tag> newTags)
+        public async Task<Recipe> UpdateRecipeAsync(int id, string newName, List<Tuple<Ingredient, float>> newIngredientsWithAmount, List<Tag> newTags)
         {
             var recipe = await _dbContext.Recipes.FindAsync(id);
             if (recipe != null)
@@ -52,6 +53,7 @@ namespace CocktailAppBackend.Services
                 recipe.Tags = newTags;
                 await _dbContext.SaveChangesAsync();
             }
+            await _dbContext.UpdateRecipeValues();
             return recipe;
         }
 

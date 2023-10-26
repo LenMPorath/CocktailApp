@@ -23,12 +23,8 @@ namespace CocktailAppBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuth(int id, string username, string password, string eMail, bool isAdmin)
         {
-            var result = await _authService.UpdateAuthAsync(id, username, password, eMail, isAdmin);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
+            await _authService.UpdateAuthAsync(id, username, password, eMail, isAdmin);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -42,12 +38,12 @@ namespace CocktailAppBackend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAuthById(int id)
         {
-            var order = await _authService.GetAuthAsync(id);
-            if (order == null)
+            var auth = await _authService.GetAuthAsync(id);
+            if (auth == null)
             {
                 return NotFound();
             }
-            return Ok(order);
+            return Ok(auth);
         }
 
         [HttpGet]
