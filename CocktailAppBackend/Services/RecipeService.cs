@@ -5,7 +5,15 @@ using Microsoft.EntityFrameworkCore;
 
 namespace CocktailAppBackend.Services
 {
-    public class RecipeService
+    public interface IRecipeService
+    {
+        Task AddRecipeAsync(string username, string password, string email, bool isAdmin);
+        Task UpdateRecipeAsync(int id, string newUsername, string newPassword, string newEmail, bool newIsAdmin);
+        Task DeleteRecipeAsync(int id);
+        Task<List<AAuth>> GetAllRecipesAsync();
+        Task<AAuth> GetRecipeAsync(int id);
+    }
+    public class RecipeService : IRecipeService
     {
         private readonly CocktailAppDBContext _dbContext;
 
@@ -14,9 +22,15 @@ namespace CocktailAppBackend.Services
             _dbContext = dbContext;
         }
 
-        public async Task<Recipe> AddRecipeAsync(string name, List<Tuple<Ingredient, float>> ingredientsWithAmount, List<Tag> tags)
+        public async Task AddRecipeAsync(string name, List<Tuple<Ingredient, float>> ingredientsWithAmount, List<Tag> tags)
         {
-            var recipe = new Recipe { Name = name, Ingredients = new List<Ingredient>(), Tags = tags };
+            var recipe = new Recipe 
+            { 
+                Name = name, 
+                Ingredients = new List<Ingredient>(), 
+                Tags = tags 
+            };
+            
             foreach (var tuple in ingredientsWithAmount)
             {
                 var recipeDetail = new RecipeDetail
@@ -29,7 +43,6 @@ namespace CocktailAppBackend.Services
             _dbContext.Recipes.Add(recipe);
             await _dbContext.SaveChangesAsync();
             await _dbContext.UpdateRecipeValues();
-            return recipe;
         }
 
         public async Task<Recipe> UpdateRecipeAsync(int id, string newName, List<Tuple<Ingredient, float>> newIngredientsWithAmount, List<Tag> newTags)
