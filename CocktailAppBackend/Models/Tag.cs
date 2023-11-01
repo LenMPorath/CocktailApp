@@ -9,7 +9,13 @@ namespace CocktailApp.Models
     {
         [Key]
         public int Id { get; set; }
-        public string Title { get; set; }
-        public ICollection<Recipe> Recipes { get; set; }
+        public string Title { get; set; } = null!;
+        public virtual ICollection<Recipe>? Recipes { get; set; }
+    }
+    public class ATag
+    {
+        public int Id { get; set; }
+        public string Title { get; set; } = null!;
+        public virtual ICollection<int>? RecipeList { get; set; }
     }
 }

@@ -1,4 +1,5 @@
-﻿using CocktailAppBackend.Services;
+﻿using CocktailApp.Models;
+using CocktailAppBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailAppBackend.Controllers
@@ -13,22 +14,20 @@ namespace CocktailAppBackend.Controllers
         {
             _authService = authService;
         }
+
         [HttpPost]
-        public async Task<IActionResult> AddAuth(string username, string password, string eMail, bool isAdmin)
+        public async Task<IActionResult> AddAuth([FromBody] AAuthRequestModel authRequest)
         {
-            await _authService.AddAuthAsync(username, password, eMail, isAdmin);
+            Console.WriteLine(authRequest.Username, authRequest.Password, authRequest.Salt, authRequest.EMail, authRequest.IsAdmin);
+            await _authService.AddAuthAsync(authRequest.Username, authRequest.Password, authRequest.Salt, authRequest.EMail, authRequest.IsAdmin);
             return Ok();
         }
 
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateAuth(int id, string username, string password, string eMail, bool isAdmin)
         {
-            var result = await _authService.UpdateAuthAsync(id, username, password, eMail, isAdmin);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
+            await _authService.UpdateAuthAsync(id, username, password, eMail, isAdmin);
+            return Ok();
         }
 
         [HttpDelete("{id}")]
@@ -42,12 +41,12 @@ namespace CocktailAppBackend.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> GetAuthById(int id)
         {
-            var order = await _authService.GetAuthAsync(id);
-            if (order == null)
+            var auth = await _authService.GetAuthAsync(id);
+            if (auth == null)
             {
                 return NotFound();
             }
-            return Ok(order);
+            return Ok(auth);
         }
 
         [HttpGet]

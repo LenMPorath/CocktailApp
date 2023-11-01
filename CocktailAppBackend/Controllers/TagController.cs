@@ -24,12 +24,8 @@ namespace CocktailAppBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateTag(int id, string newTitle)
         {
-            var result = await _tagService.UpdateTagAsync(id, newTitle);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
+            await _tagService.UpdateTagAsync(id, newTitle);
+            return Ok();
         }
 
         [HttpDelete("{id}")]

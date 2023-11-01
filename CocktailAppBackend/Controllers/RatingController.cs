@@ -23,12 +23,8 @@ namespace CocktailAppBackend.Controllers
         [HttpPut("{id}")]
         public async Task<IActionResult> UpdateRating(int id, int grade, string? comment)
         {
-            var result = await _ratingService.UpdateRatingAsync(id, grade, comment);
-            if (result == null)
-            {
-                return NotFound();
-            }
-            return Ok(result);
+            await _ratingService.UpdateRatingAsync(id, grade, comment);
+            return Ok();
         }
 
         [HttpDelete("{id}")]

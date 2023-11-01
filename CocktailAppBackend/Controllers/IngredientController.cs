@@ -16,16 +16,16 @@ namespace CocktailAppBackend.Controllers
     
 
         [HttpPost]
-        public async Task<IActionResult> AddIngredient(string name, int kcal)
+        public async Task<IActionResult> AddIngredient(string name, float kcal, string? imgPath, bool inStorage)
         {
-            await _ingredientService.AddIngredientAsync(name, kcal);
+            await _ingredientService.AddIngredientAsync(name, kcal, imgPath, inStorage);
             return Ok();
         }
 
         [HttpPut("{id}")]
-        public async Task<IActionResult> UpdateIngredient(int id, string name, int kcal)
+        public async Task<IActionResult> UpdateIngredient(int id, string name, float kcal, string? imgPath, bool inStorage)
         {
-            var result = await _ingredientService.UpdateIngredientAsync(id, name, kcal);
+            var result = await _ingredientService.UpdateIngredientAsync(id, name, kcal, imgPath, inStorage);
             if (result == null)
             {
                 return NotFound();

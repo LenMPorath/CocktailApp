@@ -7,11 +7,11 @@ namespace CocktailAppBackend.Services
 {
     public interface ITagService
     {
-        Task<Tag> AddTagAsync(string title);
-        Task<Tag> UpdateTagAsync(int id, string newTitle);
+        Task AddTagAsync(string title);
+        Task UpdateTagAsync(int id, string newTitle);
         Task DeleteTagAsync(int id);
-        Task<List<Tag>> GetAllTagsAsync();
-        Task<Tag?> GetTagAsync(int id);
+        Task<List<ATag>> GetAllTagsAsync();
+        Task<ATag?> GetTagAsync(int id);
     }
     public class TagService : ITagService
     {
@@ -21,43 +21,83 @@ namespace CocktailAppBackend.Services
         {
             _dbContext = dbContext;
         }
-        public async Task<Tag> AddTagAsync(string title)
+        public async Task AddTagAsync(string title)
         {
             var tag = new Tag { Title = title };
             _dbContext.Tags.Add(tag);
             await _dbContext.SaveChangesAsync();
-            return tag;
         }
 
-        public async Task<Tag> UpdateTagAsync(int id, string newTitle)
+        public async Task UpdateTagAsync(int id, string newTitle)
         {
             var tag = await _dbContext.Tags.FindAsync(id);
-            if (tag != null)
-            {
-                tag.Title = newTitle;
-                await _dbContext.SaveChangesAsync();
+            if (tag == null) {
+                throw new ArgumentException($"Tag with id {id} not found");
             }
-            return tag;
+            tag.Title = newTitle;
+            await _dbContext.SaveChangesAsync();
         }
 
         public async Task DeleteTagAsync(int id)
         {
             var tag = await _dbContext.Tags.FindAsync(id);
-            if (tag != null)
+            if (tag == null)
             {
-                _dbContext.Tags.Remove(tag);
-                await _dbContext.SaveChangesAsync();
+                throw new Exception($"Tag with ID {id} wasn't found!");
             }
+            _dbContext.Tags.Remove(tag);
+            await _dbContext.SaveChangesAsync();
         }
 
-        public async Task<List<Tag>> GetAllTagsAsync()
+        public async Task<List<ATag>> GetAllTagsAsync()
         {
-            return await _dbContext.Tags.ToListAsync();
+            var allTags = await _dbContext.Tags.ToListAsync();
+            var result = new List<ATag>();
+
+            foreach (var tag in allTags)
+            {
+                var aTag = new ATag
+                {
+                    Id = tag.Id,
+                    Title = tag.Title,
+                    RecipeList = new List<int>(),
+                };
+
+                if (tag.Recipes != null && tag.Recipes.Any())
+                {
+                    foreach (var recipe in tag.Recipes)
+                    {
+                        aTag.RecipeList.Add(recipe.Id);
+                    }
+                }
+                result.Add(aTag);
+            }
+            return result;
         }
 
-        public async Task<Tag?> GetTagAsync(int id)
+        public async Task<ATag?> GetTagAsync(int id)
         {
-            return await _dbContext.Tags.FindAsync(id);
+            var tag = await _dbContext.Tags.FindAsync(id);
+            if (tag == null)
+            {
+                throw new Exception($"Tag with ID {id} wasn't found!");
+            }
+            var aTag = new ATag
+            {
+                Id = tag.Id,
+                Title = tag.Title,
+                RecipeList = new List<int>(),
+            };
+
+            if (tag.Recipes != null && tag.Recipes.Any())
+            {
+                foreach (var recipe in tag.Recipes)
+                {
+                    aTag.RecipeList.Add(recipe.Id);
+                }
+            }
+
+            return aTag;
         }
     }
 }
