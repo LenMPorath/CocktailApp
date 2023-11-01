@@ -12,6 +12,7 @@ namespace CocktailAppBackend
         public DbSet<Order> Orders { get; set; }
         public DbSet<Tag> Tags { get; set; }
         public DbSet<RecipeDetail> RecipeDetails { get; set; }
+        public DbSet<RecipeTag> RecipeTags { get; set; }
         public DbSet<Recipe> Recipes { get; set; }
         public DbSet<Ingredient> Ingredients { get; set; }
         public DbSet<Rating> Ratings { get; set; }
@@ -78,10 +79,11 @@ namespace CocktailAppBackend
                 .WithMany(e => e.Recipes)
                 .UsingEntity<RecipeDetail>();
 
-            // Recipe-Tag n:m Beziehung ( über RecipeTag )
+            // Recipe-Tag n:m Beziehung über RecipeTag
             modelBuilder.Entity<Recipe>()
                 .HasMany(e => e.Tags)
-                .WithMany(e => e.Recipes);
+                .WithMany(e => e.Recipes)
+                .UsingEntity<RecipeTag>();
 
             // Recipe-Order 1:n Beziehung über FK "RecipeId"
             modelBuilder.Entity<Order>()
@@ -125,7 +127,9 @@ namespace CocktailAppBackend
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
         {
             optionsBuilder.UseMySql(_configuration.GetConnectionString("DefaultConnection"), new MariaDbServerVersion("10.9.8"),
-                options => options.EnableRetryOnFailure());
+                options => {
+                    options.EnableRetryOnFailure();
+                });
             optionsBuilder.UseLazyLoadingProxies();
         }
 

@@ -1,5 +1,4 @@
 ﻿using System;
-using CocktailApp.Services;
 using CocktailApp.Views;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
@@ -13,7 +12,6 @@ namespace CocktailApp
         {
             InitializeComponent();
 
-            DependencyService.Register<MockDataStore>();
             MainPage = new AppShell();
         }
 

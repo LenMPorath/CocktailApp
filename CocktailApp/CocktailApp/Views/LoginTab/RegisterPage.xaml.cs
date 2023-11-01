@@ -7,6 +7,8 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 using Rg.Plugins.Popup.Services;
+using CocktailApp.BackendAPI;
+using CocktailApp.Services;
 
 namespace CocktailApp.Views
 {
@@ -18,13 +20,24 @@ namespace CocktailApp.Views
             InitializeComponent();
         }
 
-        private void OnRegisterClicked(object sender, EventArgs e)
+        private async void OnRegisterClicked(object sender, EventArgs e)
         {
             if (!string.IsNullOrEmpty(UsernameEntry.Text) && !string.IsNullOrEmpty(EMailEntry.Text) && !string.IsNullOrEmpty(PasswordEntry.Text) && !string.IsNullOrEmpty(PasswordRepeatEntry.Text))
             {
-                HintFillAllFields.IsVisible = false;
-                // Prozedere Bestätigungsmail
-                OpenPopUp();
+                if (PasswordEntry.Text == PasswordRepeatEntry.Text)
+                {
+                    HintFillAllFields.IsVisible = false;
+                    HintPasswordsDontMatch.IsVisible = false;
+                    string salt = PasswordService.CreateSalt();
+                    string passwordHash = PasswordService.ComputeHash(PasswordEntry.Text, salt);
+                    await AuthAPI.CreateAuth(UsernameEntry.Text, passwordHash, salt, EMailEntry.Text);
+                    OpenPopUp();
+                }
+                else
+                {
+                    HintFillAllFields.IsVisible = false;
+                    HintPasswordsDontMatch.IsVisible = true;
+                }
             }
             else
             {

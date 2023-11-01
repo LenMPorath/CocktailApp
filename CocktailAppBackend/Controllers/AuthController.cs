@@ -1,4 +1,5 @@
-﻿using CocktailAppBackend.Services;
+﻿using CocktailApp.Models;
+using CocktailAppBackend.Services;
 using Microsoft.AspNetCore.Mvc;
 
 namespace CocktailAppBackend.Controllers
@@ -13,10 +14,12 @@ namespace CocktailAppBackend.Controllers
         {
             _authService = authService;
         }
+
         [HttpPost]
-        public async Task<IActionResult> AddAuth(string username, string password, string eMail, bool isAdmin)
+        public async Task<IActionResult> AddAuth([FromBody] AAuthRequestModel authRequest)
         {
-            await _authService.AddAuthAsync(username, password, eMail, isAdmin);
+            Console.WriteLine(authRequest.Username, authRequest.Password, authRequest.Salt, authRequest.EMail, authRequest.IsAdmin);
+            await _authService.AddAuthAsync(authRequest.Username, authRequest.Password, authRequest.Salt, authRequest.EMail, authRequest.IsAdmin);
             return Ok();
         }
 
