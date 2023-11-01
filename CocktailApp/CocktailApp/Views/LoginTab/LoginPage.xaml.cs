@@ -31,40 +31,34 @@ namespace CocktailApp.Views
 
             if (!string.IsNullOrEmpty(EMailEntry.Text) && !string.IsNullOrEmpty(PasswordEntry.Text))
             {
-                try
+                string salt = await AuthAPI.GetSaltWithEMail(EMailEntry.Text);
+
+                if (salt != null)
                 {
-                    AAuthRequestModel auth = await AuthAPI.GetAuthWithEMail(EMailEntry.Text);
+                    string newPasswordHash = PasswordService.ComputeHash(PasswordEntry.Text, salt);
+                    bool passwordCorrect = await AuthAPI.VerifyPassword(EMailEntry.Text, newPasswordHash);
 
-                    if (auth != null)
+                    if (passwordCorrect)
                     {
-                        string newPasswordHash = PasswordService.ComputeHash(PasswordEntry.Text, auth.Salt);
-
-                        if (auth.Password == newPasswordHash)
-                        {
-                            OpenPopUpLoginSuccessfull();
-                            InputIsWrong.IsVisible = false;
-                        }
-                        else
-                        {
-                            InputIsWrong.IsVisible = true; // Zeige eine Meldung an, dass das Passwort falsch ist
-                        }
+                        OpenPopUpLoginSuccessfull();
+                        InputIsWrong.IsVisible = false;
                     }
                     else
                     {
-                        InputIsWrong.IsVisible = true; // Zeige eine Meldung an, dass der Benutzer nicht gefunden wurde
+                        InputIsWrong.IsVisible = true; // Zeige eine Meldung an, dass das Passwort falsch ist
                     }
-                }
-                catch (HttpRequestException exception)
+                } else
                 {
-                    Console.WriteLine($"Fehler bei der Anfrage: {exception.Message}");
-                    // Weitere Maßnahmen zur Fehlerbehandlung hier einfügen
+                    InputIsWrong.IsVisible = true;
                 }
-            }
-            else
+                
+            } else
             {
-                HintFillAllLoginFields.IsVisible = true; // Zeige eine Meldung an, dass alle Felder ausgefüllt werden müssen
+                HintFillAllLoginFields.IsVisible = true;
             }
         }
+
+
 
 
         private async void OnRegisterClicked(object sender, EventArgs e)

@@ -15,6 +15,8 @@ namespace CocktailAppBackend.Services
         Task DeleteAuthAsync(int id);
         Task<string> GetAllAuthsAsync();
         Task<AAuth> GetAuthAsync(int id);
+        Task<bool> VerifyPasswordAsync(string email, string password);
+        Task<string> GetSaltAsync(string email);
     }
     public class AuthService : IAuthService
     {
@@ -129,6 +131,36 @@ namespace CocktailAppBackend.Services
             }
 
             return aAuth;
+        }
+
+        public async Task<bool> VerifyPasswordAsync(string email, string password)
+        {
+            var auth = await _dbContext.Auths.FirstOrDefaultAsync(a => a.EMail == email);
+
+            if (auth == null)
+            {
+                Console.Write($"Email {email} wurde nicht gefunden!");
+                return false;
+            }
+
+            if (password == auth.PasswordHash)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public async Task<string> GetSaltAsync(string email)
+        {
+            var auth = await _dbContext.Auths.FirstOrDefaultAsync(a => a.EMail == email);
+
+            if (auth != null)
+            {
+                return auth.PasswordSalt;
+            }
+
+            Console.Write($"Email {email} wurde nicht gefunden!");
+            return null;
         }
 
     }

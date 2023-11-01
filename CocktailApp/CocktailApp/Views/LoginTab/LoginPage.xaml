@@ -14,7 +14,7 @@
         <StackLayout Padding="40,0,40,0" VerticalOptions="Center" Spacing="20">
             <Entry Placeholder="E-Mail" x:Name="EMailEntry"/>
             <Entry Placeholder="Passwort" IsPassword="True" x:Name="PasswordEntry"/>
-            <Label Text="Das Passwort ist falsch!" TextColor="Red" IsVisible="false" x:Name="InputIsWrong"/>
+            <Label Text="Email oder Passwort falsch!" TextColor="Red" IsVisible="false" x:Name="InputIsWrong"/>
             <Label Text="Bitte fülle alle Felder aus!" TextColor="Red" IsVisible="false" x:Name="HintFillAllLoginFields"/>
             <Button VerticalOptions="Center" Text="Login" Clicked="OnLoginClicked"/>
             <Label Text="Du hast noch kein Konto?"/>

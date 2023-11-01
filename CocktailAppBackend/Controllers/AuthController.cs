@@ -49,6 +49,23 @@ namespace CocktailAppBackend.Controllers
             return Ok(auth);
         }
 
+        [HttpGet("passwordVerify/{email}/{password}")]
+        public async Task<IActionResult> VerifyPassword(string email, string password)
+        {
+            return Ok(await _authService.VerifyPasswordAsync(email, password));
+        }
+
+        [HttpGet("GetSalt/{email}")]
+        public async Task<IActionResult> GetSalt(string email)
+        {
+            string salt = await _authService.GetSaltAsync(email);
+            if (salt == null)
+            {
+                return NotFound(); // oder eine ähnliche Fehlerantwort zurückgeben
+            }
+            return Ok(salt);
+        }
+
         [HttpGet]
         public async Task<IActionResult> GetAllAuths()
         {

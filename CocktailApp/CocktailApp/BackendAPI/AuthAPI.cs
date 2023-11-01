@@ -15,25 +15,36 @@ namespace CocktailApp.BackendAPI
         public static string ipAdress = "http://10.0.2.2:5101";
 
         private static HttpClient client = new HttpClient();
-        public static async Task<AAuthRequestModel> GetAuthWithEMail(string email)
+        public static async Task<string> GetSaltWithEMail(string email)
         {
             try
             {
-                HttpResponseMessage response = await client.GetAsync(ipAdress + "/api/Auth");
+                string link = ipAdress + "/api/Auth/GetSalt/" + email;
+                HttpResponseMessage response = await client.GetAsync(link);
 
-                response.EnsureSuccessStatusCode(); // wirft eine Ausnahme, falls die Anfrage nicht erfolgreich war
-
-                string responseBody = await response.Content.ReadAsStringAsync();
-                List<AAuthRequestModel> auths = JsonSerializer.Deserialize<List<AAuthRequestModel>>(responseBody);
-
-                foreach (var auth in auths)
-                {
-                    if(auth.EMail == email)
-                    {
-                        return auth;
-                    }
+                if ( !response.IsSuccessStatusCode) { 
+                    return null;
                 }
+
+                return await response.Content.ReadAsStringAsync();
+            }
+            catch (HttpRequestException e)
+            {
+                Console.WriteLine($"Fehler bei der Anfrage: {e.Message}");
                 return null;
+                throw;
+            }
+        }
+
+        public static async Task<bool> VerifyPassword(string email, string password)
+        {
+            try
+            {
+                HttpResponseMessage response = await client.GetAsync(ipAdress + $"/api/Auth/passwordVerify/{email}/{password}");
+
+                response.EnsureSuccessStatusCode();
+
+                return JsonSerializer.Deserialize<bool>(await response.Content.ReadAsStringAsync());
             }
             catch (HttpRequestException e)
             {
