@@ -16,6 +16,9 @@
     <Compile Update="Views\InventoryTab\CreateIngredientPage.xaml.cs">
       <DependentUpon>CreateIngredientPage.xaml</DependentUpon>
     </Compile>
+    <Compile Update="Views\LoginTab\LogoutPopUpPage - Kopieren.xaml.cs">
+      <DependentUpon>LogoutPopUpPage - Kopieren.xaml</DependentUpon>
+    </Compile>
     <Compile Update="Views\LoginTab\LoginPopUpPage.xaml.cs">
       <DependentUpon>LoginPopUpPage.xaml</DependentUpon>
     </Compile>

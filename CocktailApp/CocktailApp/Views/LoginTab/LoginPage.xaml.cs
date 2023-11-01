@@ -81,10 +81,23 @@ namespace CocktailApp.Views
             await Navigation.PushAsync(new ForgotPasswordPage()); // Navigiere zur "Passwort Vergessen"-Seite
         }
 
+        private async void OnLogoutClicked(object sender, EventArgs e)
+        {
+            EMailEntry.Text = "";
+            PasswordEntry.Text = "";
+            OpenPopUpLogoutSuccessfull();
+        }
+
         private async void OpenPopUpLoginSuccessfull()
         {
-            var popup = new LoginPopUpPage(); // Erstelle eine Instanz deiner Popup-Seite
-            await PopupNavigation.Instance.PushAsync(popup); // Öffne das Popup-Fenster
+            var loginpopup = new LoginPopUpPage();
+            await PopupNavigation.Instance.PushAsync(loginpopup);
+        }
+
+        private async void OpenPopUpLogoutSuccessfull()
+        {
+            var logoutpopup = new LogoutPopUpPage();
+            await PopupNavigation.Instance.PushAsync(logoutpopup);
         }
     }
 }

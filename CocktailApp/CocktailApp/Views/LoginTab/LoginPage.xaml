@@ -19,6 +19,7 @@
             <Button VerticalOptions="Center" Text="Login" Clicked="OnLoginClicked"/>
             <Label Text="Du hast noch kein Konto?"/>
             <Button VerticalOptions="Center" Text="Registrieren" Clicked="OnRegisterClicked"/>
+            <Button VerticalOptions="Center" Text="Abmelden" Clicked="OnLogoutClicked"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
