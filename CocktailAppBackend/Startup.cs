@@ -9,6 +9,10 @@ using CocktailAppBackend.Services;
 
 namespace CocktailAppBackend
 {
+    public class AppSettings
+    {
+        public string SecretKey { get; set; }
+    }
     public class Startup
     {
         public Startup(IConfiguration configuration)
@@ -34,6 +38,8 @@ namespace CocktailAppBackend
                 {
                     options.UseMySql(connectionString, new MariaDbServerVersion("10.9.0"));
                 });
+            var appSettingsSection = Configuration.GetSection("AppSettings");
+            services.Configure<AppSettings>(appSettingsSection);
 
             services.AddScoped<IOrderService, OrderService>();
             services.AddScoped<IAuthService, AuthService>();
@@ -41,6 +47,7 @@ namespace CocktailAppBackend
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<ITokenService, TokenService>();
 
         }
 
