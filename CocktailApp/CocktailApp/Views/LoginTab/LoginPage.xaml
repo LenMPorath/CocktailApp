@@ -8,18 +8,21 @@
              Title="Login">
 
     <ContentPage.ToolbarItems>
-        <ToolbarItem Text="Passwort vergessen?" Clicked="OnForgotPasswordClicked" />
+        <ToolbarItem Text="Passwort vergessen?" Clicked="OnForgotPasswordClicked" x:Name="ForgotPasswordButton"/>
     </ContentPage.ToolbarItems>
+
     <ContentPage.Content>
         <StackLayout Padding="40,0,40,0" VerticalOptions="Center" Spacing="20">
+            <Image Source="Logo.png" WidthRequest="200" HeightRequest="200" />
             <Entry Placeholder="E-Mail" x:Name="EMailEntry"/>
             <Entry Placeholder="Passwort" IsPassword="True" x:Name="PasswordEntry"/>
             <Label Text="Email oder Passwort falsch!" TextColor="Red" IsVisible="false" x:Name="InputIsWrong"/>
             <Label Text="Bitte fülle alle Felder aus!" TextColor="Red" IsVisible="false" x:Name="HintFillAllLoginFields"/>
-            <Button VerticalOptions="Center" Text="Login" Clicked="OnLoginClicked"/>
-            <Label Text="Du hast noch kein Konto?"/>
-            <Button VerticalOptions="Center" Text="Registrieren" Clicked="OnRegisterClicked"/>
-            <Button VerticalOptions="Center" Text="Abmelden" Clicked="OnLogoutClicked"/>
+            <Button VerticalOptions="Center" Text="Login" Clicked="OnLoginClicked" x:Name="LoginButton"/>
+            <Label Text="Willkommen zurück in der CocktailApp!" x:Name="TextWelcomeBack" FontSize="18"/>
+            <Label Text="Du hast noch kein Konto?" x:Name="TextNoAccount"/>
+            <Button VerticalOptions="Center" Text="Registrieren" Clicked="OnRegisterClicked" x:Name="RegisterButton"/>
+            <Button VerticalOptions="Center" Text="Abmelden" Clicked="OnLogoutClicked" x:Name="LogoutButton"/>
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

@@ -10,6 +10,7 @@ using CocktailApp.Models;
 using CocktailApp.Services;
 using CocktailApp.ViewModels;
 using Rg.Plugins.Popup.Services;
+using Xamarin.Essentials;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -21,7 +22,35 @@ namespace CocktailApp.Views
         public LoginPage()
         {
             InitializeComponent();
+            RefreshComponents();
             this.BindingContext = new LoginViewModel();
+        }
+
+        private async void RefreshComponents()
+        {
+            if (await SecureStorage.GetAsync("auth_token") != null)
+            {
+                ForgotPasswordButton.IsEnabled = false;
+                EMailEntry.IsVisible = false;
+                PasswordEntry.IsVisible = false;
+                LoginButton.IsEnabled = false;
+                TextWelcomeBack.IsVisible = true;
+                TextNoAccount.IsVisible = false;
+                RegisterButton.IsEnabled = false;
+                LogoutButton.IsEnabled = true;
+                AppShell.RefreshTabsAsync();
+            } else
+            {
+                ForgotPasswordButton.IsEnabled = true;
+                EMailEntry.IsVisible = true;
+                PasswordEntry.IsVisible = true;
+                LoginButton.IsEnabled = true;
+                TextWelcomeBack.IsVisible = false;
+                TextNoAccount.IsVisible = true;
+                RegisterButton.IsEnabled = true;
+                LogoutButton.IsEnabled = false;
+                AppShell.RefreshTabsAsync();
+            }
         }
 
         private async void OnLoginClicked(object sender, EventArgs e)
@@ -36,12 +65,19 @@ namespace CocktailApp.Views
                 if (salt != null)
                 {
                     string newPasswordHash = PasswordService.ComputeHash(PasswordEntry.Text, salt);
-                    bool passwordCorrect = await AuthAPI.VerifyPassword(EMailEntry.Text, newPasswordHash);
+                    ResponseData returnedData = await AuthAPI.VerifyPassword(EMailEntry.Text, newPasswordHash);
+                    string token = returnedData.Token;
+                    bool isAdmin = returnedData.IsAdmin;
 
-                    if (passwordCorrect)
+                    if (token != null)
                     {
                         OpenPopUpLoginSuccessfull();
+                        await SecureStorage.SetAsync("auth_token", token);
+                        await SecureStorage.SetAsync("isAdmin", isAdmin.ToString());
                         InputIsWrong.IsVisible = false;
+                        EMailEntry.Text = "";
+                        PasswordEntry.Text = "";
+                        RefreshComponents();
                     }
                     else
                     {
@@ -75,10 +111,12 @@ namespace CocktailApp.Views
             await Navigation.PushAsync(new ForgotPasswordPage()); // Navigiere zur "Passwort Vergessen"-Seite
         }
 
-        private async void OnLogoutClicked(object sender, EventArgs e)
+        private void OnLogoutClicked(object sender, EventArgs e)
         {
+            SecureStorage.Remove("auth_token");
             EMailEntry.Text = "";
             PasswordEntry.Text = "";
+            RefreshComponents();
             OpenPopUpLogoutSuccessfull();
         }
 

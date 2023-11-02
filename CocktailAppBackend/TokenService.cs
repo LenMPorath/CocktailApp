@@ -7,7 +7,11 @@ using System.Text;
 
 namespace CocktailAppBackend
 {
-    public class TokenService
+    public interface ITokenService
+    {
+        string GenerateToken(int Authid);
+    }
+    public class TokenService : ITokenService
     {
         private readonly AppSettings _appSettings;
 
@@ -21,8 +25,9 @@ namespace CocktailAppBackend
             return _appSettings.SecretKey;
         }
 
-        public string GenerateToken(string userId)
+        public string GenerateToken(int Authid)
         {
+            string userId = Authid.ToString();
             var tokenHandler = new JwtSecurityTokenHandler();
             var key = Encoding.ASCII.GetBytes(GetSecretKey());
 

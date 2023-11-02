@@ -9,10 +9,12 @@ namespace CocktailAppBackend.Controllers
     public class AuthController : ControllerBase
     {
         private readonly IAuthService _authService;
+        private readonly ITokenService _tokenService;
 
-        public AuthController(IAuthService authService)
+        public AuthController(IAuthService authService, ITokenService tokenService)
         {
             _authService = authService;
+            _tokenService = tokenService;
         }
 
         [HttpPost]
@@ -52,7 +54,17 @@ namespace CocktailAppBackend.Controllers
         [HttpGet("passwordVerify/{email}/{password}")]
         public async Task<IActionResult> VerifyPassword(string email, string password)
         {
-            return Ok(await _authService.VerifyPasswordAsync(email, password));
+            var tuple = await _authService.VerifyPasswordAsync(email, password);
+
+            if (!tuple.Item2)
+            {
+                return BadRequest( new { message = "Password is wrong" });
+            }
+
+            return Ok(new {
+                Token = _tokenService.GenerateToken(tuple.Item1.Id),
+                isAdmin = tuple.Item1.IsAdmin    
+            });
         }
 
         [HttpGet("GetSalt/{email}")]

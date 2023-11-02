@@ -47,6 +47,7 @@ namespace CocktailAppBackend
             services.AddScoped<IRatingService, RatingService>();
             services.AddScoped<ITagService, TagService>();
             services.AddScoped<IRecipeService, RecipeService>();
+            services.AddScoped<ITokenService, TokenService>();
 
         }
 
