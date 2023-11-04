@@ -16,9 +16,9 @@ namespace CocktailAppBackend.Controllers
     
 
         [HttpPost]
-        public async Task<IActionResult> AddIngredient(string name, float kcal, string? imgPath, bool inStorage)
+        public async Task<IActionResult> AddIngredient(string name, float kcal, bool inStorage)
         {
-            await _ingredientService.AddIngredientAsync(name, kcal, imgPath, inStorage);
+            await _ingredientService.AddIngredientAsync(name, kcal, inStorage);
             return Ok();
         }
 

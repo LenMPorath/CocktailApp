@@ -63,6 +63,8 @@ namespace CocktailAppBackend.Controllers
 
             return Ok(new {
                 Token = _tokenService.GenerateToken(tuple.Item1.Id),
+                Nutzername = tuple.Item1.Username,
+                UserId = tuple.Item1.Id,
                 isAdmin = tuple.Item1.IsAdmin    
             });
         }

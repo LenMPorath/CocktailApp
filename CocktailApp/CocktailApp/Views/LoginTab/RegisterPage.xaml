@@ -5,11 +5,15 @@
              Title="Registrieren">
     
     <ContentPage.Content>
-        <StackLayout Padding="40,0,40,0" VerticalOptions="Center" Spacing="20">
-            <Entry Placeholder="Benutzername" x:Name="UsernameEntry"/>
-            <Entry Placeholder="E-Mail Adresse" x:Name="EMailEntry"/>
-            <Entry Placeholder="Passwort" IsPassword="True" x:Name="PasswordEntry"/>
-            <Entry Placeholder="Passwort wiederholen" IsPassword="True" x:Name="PasswordRepeatEntry"/>
+        <StackLayout Padding="40,0,40,0" VerticalOptions="Center" Spacing="0">
+            <Label Text="Benutzername"/>
+            <Entry Placeholder="Benutzername" x:Name="UsernameEntry" Margin="0,0,0,15"/>
+            <Label Text="E-Mail Adresse"/>
+            <Entry Placeholder="E-Mail Adresse" x:Name="EMailEntry" Margin="0,0,0,15"/>
+            <Label Text="Passwort"/>
+            <Entry Placeholder="Passwort" IsPassword="True" x:Name="PasswordEntry" Margin="0,0,0,15"/>
+            <Label Text="Passwort wiederholen"/>
+            <Entry Placeholder="Passwort wiederholen" IsPassword="True" x:Name="PasswordRepeatEntry" Margin="0,0,0,25"/>
             <Label Text="Die Passwörter stimmen nicht überein!" TextColor="Red" IsVisible="false" x:Name="HintPasswordsDontMatch"/>
             <Label Text="Bitte fülle alle Felder aus!" TextColor="Red" IsVisible="false" x:Name="HintFillAllFields"/>
             <Button VerticalOptions="Center" Text="Registrieren" Clicked="OnRegisterClicked"/>

@@ -4,10 +4,23 @@
              x:Class="CocktailApp.Views.InventoryTab.CreateIngredientPage"
              Title="Zutat hinzufügen">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="40,0,40,0" VerticalOptions="Center" Spacing="20">
+
+            <Entry Placeholder="Name" x:Name="NameEntry" />
+            <Entry Placeholder="Kcal" Keyboard="Numeric" x:Name="KcalEntry" />
+
+            <Grid>
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="*"/>
+                    <ColumnDefinition Width="Auto"/>
+                </Grid.ColumnDefinitions>
+
+                <Label Text="Zurzeit Verfügbar" VerticalOptions="Center" HorizontalOptions="Start"/>
+                <Switch x:Name="AvailabilitySwitch" IsToggled="true" OnColor="LightGray" ThumbColor="{StaticResource Primary}" />
+            </Grid>
+
+            <Button Text="Speichern" Clicked="OnSaveClicked"/>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>

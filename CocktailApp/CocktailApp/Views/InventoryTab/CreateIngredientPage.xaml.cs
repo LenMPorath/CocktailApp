@@ -16,5 +16,10 @@ namespace CocktailApp.Views.InventoryTab
 		{
 			InitializeComponent ();
 		}
+
+        private async void OnSaveClicked(object sender, EventArgs e)
+        {
+
+		}
 	}
 }
