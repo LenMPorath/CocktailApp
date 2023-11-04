@@ -37,6 +37,7 @@ namespace CocktailApp.Views
                 TextWelcomeBack.IsVisible = true;
                 TextNoAccount.IsVisible = false;
                 RegisterButton.IsEnabled = false;
+                EditAccountButton.IsEnabled = true;
                 LogoutButton.IsEnabled = true;
                 AppShell.RefreshTabsAsync();
             } else
@@ -48,6 +49,7 @@ namespace CocktailApp.Views
                 TextWelcomeBack.IsVisible = false;
                 TextNoAccount.IsVisible = true;
                 RegisterButton.IsEnabled = true;
+                EditAccountButton.IsEnabled = false;
                 LogoutButton.IsEnabled = false;
                 AppShell.RefreshTabsAsync();
             }
@@ -65,15 +67,20 @@ namespace CocktailApp.Views
                 if (salt != null)
                 {
                     string newPasswordHash = PasswordService.ComputeHash(PasswordEntry.Text, salt);
-                    ResponseData returnedData = await AuthAPI.VerifyPassword(EMailEntry.Text, newPasswordHash);
+                    AuthResponseData returnedData = await AuthAPI.VerifyPassword(EMailEntry.Text, newPasswordHash);
                     string token = returnedData.Token;
+                    string nutzername = returnedData.Nutzername;
                     bool isAdmin = returnedData.IsAdmin;
+                    int userId = returnedData.UserId;
 
                     if (token != null)
                     {
                         OpenPopUpLoginSuccessfull();
+                        await SecureStorage.SetAsync("email", EMailEntry.Text);
                         await SecureStorage.SetAsync("auth_token", token);
+                        await SecureStorage.SetAsync("username", nutzername);
                         await SecureStorage.SetAsync("isAdmin", isAdmin.ToString());
+                        await SecureStorage.SetAsync("id", userId.ToString());
                         InputIsWrong.IsVisible = false;
                         EMailEntry.Text = "";
                         PasswordEntry.Text = "";
@@ -94,9 +101,6 @@ namespace CocktailApp.Views
             }
         }
 
-
-
-
         private async void OnRegisterClicked(object sender, EventArgs e)
         {
             EMailEntry.Text = "";
@@ -111,9 +115,18 @@ namespace CocktailApp.Views
             await Navigation.PushAsync(new ForgotPasswordPage()); // Navigiere zur "Passwort Vergessen"-Seite
         }
 
+        private async void OnEditAccountClicked(object sender, EventArgs e)
+        {
+            await Navigation.PushAsync(new EditAccountPage()); // Navigiere zur "Konto bearbeiten"-Seite
+        }
         private void OnLogoutClicked(object sender, EventArgs e)
         {
+
             SecureStorage.Remove("auth_token");
+            SecureStorage.Remove("username");
+            SecureStorage.Remove("isAdmin");
+            SecureStorage.Remove("email");
+            SecureStorage.Remove("id");
             EMailEntry.Text = "";
             PasswordEntry.Text = "";
             RefreshComponents();

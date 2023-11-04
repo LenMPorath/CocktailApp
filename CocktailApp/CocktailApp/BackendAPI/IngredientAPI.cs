@@ -7,10 +7,12 @@ using Newtonsoft.Json;
 using System.Threading.Tasks;
 using CocktailApp.Models;
 using System.Text.Json;
+using Xamarin.Essentials;
+using System.Net.Http.Headers;
 
 namespace CocktailApp.BackendAPI
 {
-    public class AuthAPI
+    public class IngredientAPI
     {
 
         public static string ipAdress = GlobalVariables.ipAdress;
@@ -18,23 +20,29 @@ namespace CocktailApp.BackendAPI
         private static HttpClient client = new HttpClient();
 
         
-        public static async Task<string> GetSaltWithEMail(string email)
+        public static async Task AddIngredient(string name, float kcal, bool inStorage)
         {
             try
             {
-                string link = ipAdress + "/api/Auth/GetSalt/" + email;
-                HttpResponseMessage response = await client.GetAsync(link);
+                var data = new
+                {
+                    Name = name,
+                    Kcal = kcal,
+                    InStorage = inStorage,
+                    Token = await SecureStorage.GetAsync("auth_token")
+                };
 
-                if ( !response.IsSuccessStatusCode) { 
-                    return null;
-                }
+                var json = System.Text.Json.JsonSerializer.Serialize(data);
+                var content = new StringContent(json, Encoding.UTF8, "application/json");
 
-                return await response.Content.ReadAsStringAsync();
+                HttpResponseMessage response = await client.GetAsync(ipAdress + "/api/Ingredient" + content);
+
+                string responseContent = await response.Content.ReadAsStringAsync();
+                Console.WriteLine(responseContent);
             }
             catch (HttpRequestException e)
             {
                 Console.WriteLine($"Fehler bei der Anfrage: {e.Message}");
-                return null;
                 throw;
             }
         }
@@ -50,9 +58,7 @@ namespace CocktailApp.BackendAPI
                     return new AuthResponseData()
                     {
                         Token = null,
-                        Nutzername = null,
-                        UserId = -1,
-                        IsAdmin = false
+                        IsAdmin = false,
                     };
                 }
 
@@ -66,9 +72,7 @@ namespace CocktailApp.BackendAPI
                 return new AuthResponseData()
                 {
                     Token = null,
-                    Nutzername = null,
-                    UserId = -1,
-                    IsAdmin = false
+                    IsAdmin = false,
                 };
                 throw;
             }

@@ -8,7 +8,7 @@ namespace CocktailAppBackend.Services
 {
     public interface IIngredientService
     {
-        Task AddIngredientAsync(string name, float kcal, string? ImgPath, bool inStorage);
+        Task AddIngredientAsync(string name, float kcal, bool inStorage);
         Task DeleteIngredientAsync(int ingredientId);
         Task<Ingredient> UpdateIngredientAsync(int ingredientId, string newName, float newKcal, string? newImgPath, bool newInStorage);
         Task<List<AIngredient>> GetAllIngredientsAsync();
@@ -23,14 +23,14 @@ namespace CocktailAppBackend.Services
             _dbContext = dbContext;
         }
 
-        public async Task AddIngredientAsync(string name, float kcal, string? ImgPath, bool inStorage)
+        public async Task AddIngredientAsync(string name, float kcal, bool inStorage)
         {
             var ingredient = new Ingredient
             {
                 Name = name,
                 Kcal = kcal,
                 InStorage = inStorage,
-                ImgPath = ImgPath
+                ImgPath = ""
             };
 
             await _dbContext.Ingredients.AddAsync(ingredient);

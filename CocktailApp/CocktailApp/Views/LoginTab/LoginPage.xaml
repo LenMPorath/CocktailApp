@@ -13,8 +13,8 @@
 
     <ContentPage.Content>
         <StackLayout Padding="40,0,40,0" VerticalOptions="Center" Spacing="20">
-            <Image Source="Logo.png" WidthRequest="200" HeightRequest="200" />
-            <Entry Placeholder="E-Mail" x:Name="EMailEntry"/>
+            <Image Source="Logo.png" WidthRequest="200" HeightRequest="200" Margin="40"/>
+            <Entry Placeholder="E-Mail" x:Name="EMailEntry" />
             <Entry Placeholder="Passwort" IsPassword="True" x:Name="PasswordEntry"/>
             <Label Text="Email oder Passwort falsch!" TextColor="Red" IsVisible="false" x:Name="InputIsWrong"/>
             <Label Text="Bitte fülle alle Felder aus!" TextColor="Red" IsVisible="false" x:Name="HintFillAllLoginFields"/>
@@ -22,6 +22,7 @@
             <Label Text="Willkommen zurück in der CocktailApp!" x:Name="TextWelcomeBack" FontSize="18"/>
             <Label Text="Du hast noch kein Konto?" x:Name="TextNoAccount"/>
             <Button VerticalOptions="Center" Text="Registrieren" Clicked="OnRegisterClicked" x:Name="RegisterButton"/>
+            <Button VerticalOptions="Center" Text="Konto bearbeiten" Clicked="OnEditAccountClicked" x:Name="EditAccountButton"/>
             <Button VerticalOptions="Center" Text="Abmelden" Clicked="OnLogoutClicked" x:Name="LogoutButton"/>
         </StackLayout>
     </ContentPage.Content>

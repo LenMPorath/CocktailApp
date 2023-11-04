@@ -4,10 +4,17 @@
              x:Class="CocktailApp.Views.OrdersTab.CreateOrderPage"
              Title="Auftrag erstellen">
     <ContentPage.Content>
-        <StackLayout>
-            <Label Text="Welcome to Xamarin.Forms!"
-                VerticalOptions="CenterAndExpand" 
-                HorizontalOptions="CenterAndExpand" />
+        <StackLayout Padding="40,0,40,0" VerticalOptions="Center" Spacing="20">
+
+            <Entry Placeholder="Rezept" x:Name="RecipeEntry" IsEnabled="False"/>
+            <Button Text="Rezept auswählen"/>
+            <Entry Placeholder="Erstellt von" x:Name="CreatedByEntry" IsEnabled="False"/>
+            <Entry Placeholder="Menge" Text="1" x:Name="AmountEntry" Keyboard="Numeric" TextChanged="OnEntryTextChanged"/>
+            <Label Text="zusätzliche Information"/>
+            <Editor x:Name="NoteEntry" HeightRequest="60"/>
+
+            <Button Text="Auftrag erstellen" Clicked="OnCreateOrderClicked"/>
+
         </StackLayout>
     </ContentPage.Content>
 </ContentPage>
